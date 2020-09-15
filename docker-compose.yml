@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+      target: build
+    volumes:
+      - ./src/app:/go/memesan/src/app
+    command: realize start --run --no-config
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+
+  proto:
+    build:
+      context: .
+      dockerfile: docker/proto/Dockerfile
+    command: ./protoc.sh
+    volumes:
+      - ./proto:/proto
+      - ./client:/output/client
+      - ./src/app/presentation/grpc:/output/server/memesan/src/app
