@@ -1,2 +1,4 @@
 .idea
 /.env
+/src/app/presentation/grpc/
+/client/
