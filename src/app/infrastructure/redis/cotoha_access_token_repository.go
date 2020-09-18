@@ -8,23 +8,23 @@ import (
 	"time"
 )
 
-type TwitterAccessTokenRepository struct {
+type CotohaAccessTokenRepository struct {
 	Redis *redis.Client
 	TTL   time.Duration
 }
 
-func NewTwitterAccessTokenRepository(
+func NewCotohaAccessTokenRepository(
 	redis *redis.Client,
 	ttl time.Duration,
-) *TwitterAccessTokenRepository {
-	repo := new(TwitterAccessTokenRepository)
+) *CotohaAccessTokenRepository {
+	repo := new(CotohaAccessTokenRepository)
 	repo.Redis = redis
 	repo.TTL = ttl
 	return repo
 }
 
-func (repo *TwitterAccessTokenRepository) SetTwitterToken(token value_object.AccessToken) (err error) {
-	key := fmt.Sprintf("twitterToken:%s", uuid.New())
+func (repo *CotohaAccessTokenRepository) SetCotohaToken(token value_object.AccessToken) (err error) {
+	key := fmt.Sprintf("CotohaToken:%s", uuid.New())
 	err = repo.Redis.Set(ctx, key, token, repo.TTL).Err()
 	return
 }

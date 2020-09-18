@@ -3,18 +3,19 @@ package twitter
 import (
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/hourglasshoro/reviery.api/src/app/domain/value_object"
+	"github.com/hourglasshoro/reviery.api/src/app/usecase/query_service"
 	"net/http"
 	"os"
 	"strconv"
 )
 
-type AuthorizeQueryService struct {
+type AuthorizeTwitterQueryService struct {
 }
 
-func NewAuthorizeQueryService() *AuthorizeQueryService {
-	qs := new(AuthorizeQueryService)
+func NewAuthorizeTwitterQueryService() *AuthorizeTwitterQueryService {
+	qs := new(AuthorizeTwitterQueryService)
 	return qs
 }
 
@@ -23,7 +24,7 @@ type AuthResponse struct {
 	AccessToken string `json:"access_token"`
 }
 
-func (qs *AuthorizeQueryService) Auth() (token string, err error) {
+func (qs *AuthorizeTwitterQueryService) AuthTwitter() (token value_object.AccessToken, err error) {
 	url := "https://api.twitter.com/oauth2/token?grant_type=client_credentials"
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -37,7 +38,7 @@ func (qs *AuthorizeQueryService) Auth() (token string, err error) {
 		return
 	}
 	if res.Status != strconv.Itoa(http.StatusOK) {
-		err = errors.New("not ok")
+		err = query_service.CannotGetTwitterAccessTokenException
 	}
 	defer res.Body.Close()
 
@@ -46,6 +47,10 @@ func (qs *AuthorizeQueryService) Auth() (token string, err error) {
 	if err != nil {
 		return
 	}
-
-	return auth.AccessToken, nil
+	tok, err := value_object.NewAccessToken(auth.AccessToken)
+	if err != nil {
+		return
+	}
+	token = *tok
+	return
 }
