@@ -8,7 +8,6 @@ import (
 	"github.com/hourglasshoro/reviery.api/src/app/usecase/query_service"
 	"net/http"
 	"os"
-	"strconv"
 )
 
 type AuthorizeTwitterQueryService struct {
@@ -37,7 +36,7 @@ func (qs *AuthorizeTwitterQueryService) AuthTwitter() (token value_object.Access
 	if err != nil {
 		return
 	}
-	if res.Status != strconv.Itoa(http.StatusOK) {
+	if res.StatusCode != http.StatusOK {
 		err = query_service.CannotGetTwitterAccessTokenException
 	}
 	defer res.Body.Close()

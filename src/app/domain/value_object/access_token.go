@@ -3,7 +3,7 @@ package value_object
 import "errors"
 
 type AccessToken struct {
-	token string
+	Token string
 }
 
 var InvalidAccessTokenException = errors.New("invalid access token")
@@ -14,6 +14,6 @@ func NewAccessToken(token string) (t *AccessToken, err error) {
 		return
 	}
 	t = new(AccessToken)
-	t.token = token
+	t.Token = token
 	return
 }

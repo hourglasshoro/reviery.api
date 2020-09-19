@@ -7,13 +7,12 @@ import (
 	"github.com/hourglasshoro/reviery.api/src/app/usecase/query_service"
 	"net/http"
 	"os"
-	"strconv"
 )
 
 type AuthorizeQueryService struct {
 }
 
-func NewAuthorizeQueryService() *AuthorizeQueryService {
+func NewAuthorizeCotohaQueryService() *AuthorizeQueryService {
 	qs := new(AuthorizeQueryService)
 	return qs
 }
@@ -48,7 +47,7 @@ func (qs *AuthorizeQueryService) AuthCotoha() (token value_object.AccessToken, e
 	if err != nil {
 		return
 	}
-	if res.Status != strconv.Itoa(http.StatusOK) {
+	if res.StatusCode != http.StatusOK {
 		err = query_service.CannotGetCotohaAccessTokenException
 	}
 	defer res.Body.Close()

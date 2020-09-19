@@ -7,7 +7,7 @@ const MaxKeywordLength = 144
 var OverLengthLimitTwitterKeywordException = errors.New("the length of keyword has exceeded the limit")
 
 type Keyword struct {
-	keyword string
+	Keyword string
 }
 
 func NewKeyword(keyword string) (t *Keyword, err error) {
@@ -19,6 +19,6 @@ func NewKeyword(keyword string) (t *Keyword, err error) {
 	}
 
 	t = new(Keyword)
-	t.keyword = keyword
+	t.Keyword = keyword
 	return
 }

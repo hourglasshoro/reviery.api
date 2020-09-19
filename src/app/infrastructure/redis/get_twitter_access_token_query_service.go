@@ -10,6 +10,12 @@ type GetTwitterAccessTokenQueryService struct {
 	Redis *redis.Client
 }
 
+func NewGetTwitterAccessTokenQueryService(redis *redis.Client) *GetTwitterAccessTokenQueryService {
+	qs := new(GetTwitterAccessTokenQueryService)
+	qs.Redis = redis
+	return qs
+}
+
 func (qs *GetTwitterAccessTokenQueryService) GetTwitterToken() (token value_object.AccessToken, err error) {
 	tokens, err := qs.Redis.Keys(ctx, "twitterToken:*").Result()
 	if len(tokens) == 0 {
@@ -18,7 +24,11 @@ func (qs *GetTwitterAccessTokenQueryService) GetTwitterToken() (token value_obje
 	if err != nil {
 		return
 	}
-	tok, err := value_object.NewAccessToken(tokens[0])
+	tokString, err := qs.Redis.Get(ctx, tokens[0]).Result()
+	if err != nil {
+		return
+	}
+	tok, err := value_object.NewAccessToken(tokString)
 	if err != nil {
 		return
 	}

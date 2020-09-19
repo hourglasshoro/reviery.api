@@ -32,4 +32,4 @@ services:
     volumes:
       - ./proto:/proto
       - ./client:/output/client
-      - ./src/app/presentation/grpc:/output/server/memesan/src/app
+      - ./src/app/presentation/grpc:/output/server/reviery/src/app

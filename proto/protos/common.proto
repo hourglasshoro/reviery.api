@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package reviery.common;
+
+option go_package = "reviery/src/app/common";
+
+service Common{
+  rpc Search(SearchMessage)returns(SearchResponse){}
+}
+
+message SearchMessage{
+  string keyword = 1;
+}
+
+message SearchResponse{
+  float totalScore = 1;
+  repeated Opinion opinions = 2;
+}
+
+message Opinion{
+  uint64 id = 1;
+  string text = 2;
+  float score = 3;
+  SentimentType type = 4;
+}
+
+enum SentimentType{
+  Positive = 0;
+  Negative = 1;
+  Neutral = 2;
+}

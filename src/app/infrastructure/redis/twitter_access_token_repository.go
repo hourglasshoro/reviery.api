@@ -10,21 +10,18 @@ import (
 
 type TwitterAccessTokenRepository struct {
 	Redis *redis.Client
-	TTL   time.Duration
 }
 
 func NewTwitterAccessTokenRepository(
 	redis *redis.Client,
-	ttl time.Duration,
 ) *TwitterAccessTokenRepository {
 	repo := new(TwitterAccessTokenRepository)
 	repo.Redis = redis
-	repo.TTL = ttl
 	return repo
 }
 
-func (repo *TwitterAccessTokenRepository) SetTwitterToken(token value_object.AccessToken) (err error) {
+func (repo *TwitterAccessTokenRepository) SetTwitterToken(token value_object.AccessToken, ttl time.Duration) (err error) {
 	key := fmt.Sprintf("twitterToken:%s", uuid.New())
-	err = repo.Redis.Set(ctx, key, token, repo.TTL).Err()
+	err = repo.Redis.Set(ctx, key, token.Token, ttl).Err()
 	return
 }

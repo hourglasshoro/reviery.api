@@ -10,21 +10,18 @@ import (
 
 type CotohaAccessTokenRepository struct {
 	Redis *redis.Client
-	TTL   time.Duration
 }
 
 func NewCotohaAccessTokenRepository(
 	redis *redis.Client,
-	ttl time.Duration,
 ) *CotohaAccessTokenRepository {
 	repo := new(CotohaAccessTokenRepository)
 	repo.Redis = redis
-	repo.TTL = ttl
 	return repo
 }
 
-func (repo *CotohaAccessTokenRepository) SetCotohaToken(token value_object.AccessToken) (err error) {
+func (repo *CotohaAccessTokenRepository) SetCotohaToken(token value_object.AccessToken, ttl time.Duration) (err error) {
 	key := fmt.Sprintf("CotohaToken:%s", uuid.New())
-	err = repo.Redis.Set(ctx, key, token, repo.TTL).Err()
+	err = repo.Redis.Set(ctx, key, token.Token, ttl).Err()
 	return
 }

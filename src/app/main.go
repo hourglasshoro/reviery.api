@@ -1,6 +1,7 @@
 package main
 
 import (
+	pb "github.com/hourglasshoro/reviery.api/src/app/presentation/grpc/common"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
@@ -13,6 +14,13 @@ func main() {
 		log.Fatalln(err)
 	}
 	server := grpc.NewServer()
+
+	ctlrs, err := NewControllers()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	pb.RegisterCommonServer(server, &ctlrs.Common)
 
 	reflection.Register(server)
 	if err := server.Serve(listenPort); err != nil {
